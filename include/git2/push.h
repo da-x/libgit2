@@ -8,6 +8,7 @@
 #define INCLUDE_git_push_h__
 
 #include "common.h"
+#include "types.h"
 
 /**
  * @file git2/push.h

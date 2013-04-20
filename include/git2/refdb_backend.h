@@ -9,6 +9,7 @@
 
 #include "common.h"
 #include "types.h"
+#include "refs.h"
 #include "oid.h"
 
 /**
