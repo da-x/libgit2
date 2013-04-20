@@ -9,6 +9,7 @@
 
 #include "common.h"
 #include "types.h"
+#include "strarray.h"
 
 /**
  * @file git2/status.h
