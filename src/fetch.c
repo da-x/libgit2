@@ -42,7 +42,7 @@ static int maybe_want(git_remote *remote, git_remote_head *head, git_odb *odb, g
 		return 0;
 
 	/* If we have the object, mark it so we don't ask for it */
-	if (git_odb_exists(odb, &head->oid)) {
+	if (git_odb_exists(odb, &head->oid, 0)) {
 		head->local = 1;
 	}
 	else

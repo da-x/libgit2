@@ -69,10 +69,12 @@ static int impl__write(git_odb_backend *_backend, const git_oid *oid, const void
 	return 0;
 }
 
-static int impl__exists(git_odb_backend *backend, const git_oid *oid)
+static int impl__exists(git_odb_backend *backend, const git_oid *oid, int i)
 {
 	struct memory_packer_db *db = (struct memory_packer_db *)backend;
 	khiter_t pos;
+
+	GIT_UNUSED(i);
 
 	pos = kh_get(oid, db->objects, oid);
 	if (pos != kh_end(db->objects))

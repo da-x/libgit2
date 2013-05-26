@@ -624,7 +624,7 @@ void git_odb_free(git_odb *db)
 	GIT_REFCOUNT_DEC(db, odb_free);
 }
 
-static int odb_exists_1(git_odb *db, const git_oid *id, bool only_refreshed)
+static int odb_exists_1(git_odb *db, const git_oid *id, bool only_refreshed, int confirm_not_exist)
 {
 	size_t i;
 	bool found = false;
@@ -637,15 +637,17 @@ static int odb_exists_1(git_odb *db, const git_oid *id, bool only_refreshed)
 			continue;
 
 		if (b->exists != NULL)
-			found = (bool)b->exists(b, id);
+			found = (bool)b->exists(b, id, confirm_not_exist);
 	}
 
 	return (int)found;
 }
 
-int git_odb_exists(git_odb *db, const git_oid *id)
+int git_odb_exists(git_odb *db, const git_oid *id, int confirm_not_exist)
 {
 	git_odb_object *object;
+
+	GIT_UNUSED(confirm_not_exist);
 
 	assert(db && id);
 
@@ -654,11 +656,11 @@ int git_odb_exists(git_odb *db, const git_oid *id)
 		return (int)true;
 	}
 
-	if (odb_exists_1(db, id, false))
+	if (odb_exists_1(db, id, false, confirm_not_exist))
 		return 1;
 
 	if (!git_odb_refresh(db))
-		return odb_exists_1(db, id, true);
+		return odb_exists_1(db, id, true, confirm_not_exist);
 
 	/* Failed to refresh, hence not found */
 	return 0;
@@ -720,7 +722,7 @@ int git_odb_exists_prefix(
 		len = GIT_OID_HEXSZ;
 
 	if (len == GIT_OID_HEXSZ) {
-		if (git_odb_exists(db, short_id)) {
+		if (git_odb_exists(db, short_id, 0)) {
 			if (out)
 				git_oid_cpy(out, short_id);
 			return 0;
@@ -998,7 +1000,7 @@ int git_odb_write(
 	assert(oid && db);
 
 	git_odb_hash(oid, data, len, type);
-	if (git_odb_exists(db, oid))
+	if (git_odb_exists(db, oid, 1))
 		return 0;
 
 	for (i = 0; i < db->backends.length && error < 0; ++i) {
@@ -1124,7 +1126,7 @@ int git_odb_stream_finalize_write(git_oid *out, git_odb_stream *stream)
 
 	git_hash_final(out, stream->hash_ctx);
 
-	if (git_odb_exists(stream->backend->odb, out))
+	if (git_odb_exists(stream->backend->odb, out, 1))
 		return 0;
 
 	return stream->finalize_write(stream, out);

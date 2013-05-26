@@ -59,7 +59,7 @@ struct git_odb_backend {
 		git_odb_stream **, git_odb_backend *, const git_oid *);
 
 	int (* exists)(
-		git_odb_backend *, const git_oid *);
+		git_odb_backend *, const git_oid *, int);
 
 	int (* exists_prefix)(
 		git_oid *, git_odb_backend *, const git_oid *, size_t);

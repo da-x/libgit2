@@ -73,7 +73,7 @@ void test_odb_loose__exists(void)
 	cl_git_pass(git_odb_open(&odb, "test-objects"));
 
 	cl_git_pass(git_oid_fromstr(&id, one.id));
-	cl_assert(git_odb_exists(odb, &id));
+	cl_assert(git_odb_exists(odb, &id, 0));
 
 	cl_git_pass(git_oid_fromstrp(&id, "8b137891"));
 	cl_git_pass(git_odb_exists_prefix(&id2, odb, &id, 8));

@@ -1391,7 +1391,7 @@ static int update_tips_for_spec(
 		}
 
 		/* In autotag mode, only create tags for objects already in db */
-		if (autotag && !git_odb_exists(odb, &head->oid))
+		if (autotag && !git_odb_exists(odb, &head->oid, 0))
 			continue;
 
 		if (!autotag && git_vector_insert(&update_heads, head) < 0)

@@ -689,10 +689,12 @@ static int loose_backend__read_prefix(
 	return error;
 }
 
-static int loose_backend__exists(git_odb_backend *backend, const git_oid *oid)
+static int loose_backend__exists(git_odb_backend *backend, const git_oid *oid, int confirm_not_exist)
 {
 	git_buf object_path = GIT_BUF_INIT;
 	int error;
+
+	GIT_UNUSED(confirm_not_exist);
 
 	assert(backend && oid);
 
