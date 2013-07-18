@@ -1138,11 +1138,12 @@ int git_packfile_alloc(struct git_pack_file **pack_out, const char *path)
 		memcpy(p->pack_name + root_len, ".pack", sizeof(".pack"));
 	}
 
+#if (0)
 	if (p_stat(p->pack_name, &st) < 0 || !S_ISREG(st.st_mode)) {
 		git__free(p);
 		return git_odb__error_notfound("packfile not found", NULL, 0);
 	}
-
+#endif
 	/* ok, it looks sane as far as we can check without
 	 * actually mapping the pack file.
 	 */
