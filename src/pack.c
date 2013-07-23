@@ -837,7 +837,7 @@ static int packfile_open(struct git_pack_file *p)
 		goto cleanup;
 
 	/* If we created the struct before we had the pack we lack size. */
-	if (!p->mwf.size) {
+	if (1 || !p->mwf.size) {
 		if (!S_ISREG(st.st_mode))
 			goto cleanup;
 		p->mwf.size = (git_off_t)st.st_size;
