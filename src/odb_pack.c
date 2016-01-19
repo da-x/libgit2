@@ -308,8 +308,6 @@ static int pack_entry_find_prefix(
 
 	if (!found)
 		return git_odb__error_notfound("no matching pack entry for prefix", short_oid);
-	else if (found > 1)
-		return git_odb__error_ambiguous("found multiple pack entries");
 	else
 		return 0;
 }
