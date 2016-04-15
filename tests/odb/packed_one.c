@@ -30,7 +30,7 @@ void test_odb_packed_one__mass_read(void)
 		git_odb_object *obj;
 
 		cl_git_pass(git_oid_fromstr(&id, packed_objects_one[i]));
-		cl_assert(git_odb_exists(_odb, &id) == 1);
+		cl_assert(git_odb_exists(_odb, &id, 0) == 1);
 		cl_git_pass(git_odb_read(&obj, _odb, &id));
 
 		git_odb_object_free(obj);

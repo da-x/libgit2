@@ -17,10 +17,11 @@ static git_repository *_repo;
 static fake_backend *_fake;
 static git_oid _oid;
 
-static int fake_backend__exists(git_odb_backend *backend, const git_oid *oid)
+static int fake_backend__exists(git_odb_backend *backend, const git_oid *oid, int i)
 {
 	fake_backend *fake;
 
+	GIT_UNUSED(i);
 	GIT_UNUSED(oid);
 
 	fake = (fake_backend *)backend;
@@ -159,7 +160,7 @@ void test_odb_backend_nonrefreshing__exists_is_invoked_once_on_failure(void)
 	setup_repository_and_backend(GIT_ENOTFOUND);
 
 	cl_git_pass(git_repository_odb__weakptr(&odb, _repo));
-	cl_assert_equal_b(false, git_odb_exists(odb, &_oid));
+	cl_assert_equal_b(false, git_odb_exists(odb, &_oid, 0));
 
 	cl_assert_equal_i(1, _fake->exists_calls);
 }
@@ -214,7 +215,7 @@ void test_odb_backend_nonrefreshing__exists_is_invoked_once_on_success(void)
 	setup_repository_and_backend(GIT_OK);
 
 	cl_git_pass(git_repository_odb__weakptr(&odb, _repo));
-	cl_assert_equal_b(true, git_odb_exists(odb, &_oid));
+	cl_assert_equal_b(true, git_odb_exists(odb, &_oid, 0));
 
 	cl_assert_equal_i(1, _fake->exists_calls);
 }
